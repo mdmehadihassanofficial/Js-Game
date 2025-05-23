@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <title>Congratulations Popup with Rain</title>
+        <style>
+                * {
+                        padding: 0px;
+                        margin: 0px;
+                        box-sizing: border-box;
+
+                }
+
+                body {
+                        font-family: Arial, sans-serif;
+                        background-color: #EEEEEE;
+                        color: #000000;
+                        position: relative;
+                        height: 100vh;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                        overflow: hidden;
+                }
+
+                #game-image {
+                        max-width: 200px;
+                        max-height: 400px;
+                        height: auto;
+                        /* cursor: pointer; */
+                        opacity: 0.2;
+                        position: absolute;
+
+
+                }
+
+                #start-button {
+                        margin-top: 20px;
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        background-color: #38678F;
+                        color: #FFFFFF;
+                        border: none;
+                        border-radius: 5px;
+                        font-size: 30px;
+                        cursor: pointer;
+                }
+
+                .retry-button {
+                        margin-top: 20px;
+                        padding: 15px 60px;
+                        /* font-size: 16px !important; */
+                        background-color: #38678F;
+                        color: #FFFFFF;
+                        border: none;
+                        border-radius: 5px;
+                        font-size: 20px;
+                        cursor: pointer;
+                }
+
+                .card {
+                        background-color: #FFFFFF;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        padding: 20px;
+                        margin: 20px auto;
+                        max-width: 600px;
+                        position: relative;
+                        z-index: 99;
+                }
+
+                .card-body h1,
+                .card-body p,
+                .card-body button {
+                        margin-bottom: 20px;
+                }
+
+
+                /* Animation Css */
+
+
+                .popup-overlay {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.6);
+                        z-index: 1000;
+                        justify-content: center;
+                        align-items: center;
+                        animation: fadeIn 0.3s ease-in-out;
+                }
+
+                .popup {
+                        position: relative;
+                        background: #ffffff;
+                        padding: 40px;
+                        border-radius: 16px;
+                        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+                        animation: bounceIn 0.7s ease;
+                        transform-origin: center;
+                        max-width: 400px;
+                        width: 90%;
+                }
+
+                .popup.sparkles {
+                        text-align: center;
+                }
+
+                .popup h2 {
+                        color: #28a745;
+                        font-size: 28px;
+                        margin-bottom: 20px;
+                }
+
+                .popup p {
+                        font-size: 16px;
+                        margin-bottom: 20px;
+                        line-height: 24px;
+                }
+
+
+
+                /* Sparkles */
+                .sparkles::before,
+                .sparkles::after {
+                        content: '✨';
+                        position: absolute;
+                        font-size: 24px;
+                        animation: sparkle 2s infinite linear;
+                }
+
+                .sparkles::before {
+                        top: -20px;
+                        left: -20px;
+                }
+
+                .sparkles::after {
+                        bottom: -20px;
+                        right: -20px;
+                        animation-delay: 1s;
+                }
+
+                /* Rain Confetti */
+                .confetti {
+                        position: fixed;
+                        top: -10px;
+                        width: 10px;
+                        height: 10px;
+                        background-color: red;
+                        opacity: 0.7;
+                        z-index: 999;
+                        border-radius: 50%;
+                        animation: fall linear infinite;
+                }
+
+                @keyframes fall {
+                        0% {
+                                transform: translateY(-10px) rotate(0deg);
+                                opacity: 1;
+                        }
+
+                        100% {
+                                transform: translateY(100vh) rotate(360deg);
+                                opacity: 0;
+                        }
+                }
+
+                /* Animations */
+                @keyframes fadeIn {
+                        from {
+                                opacity: 0;
+                        }
+
+                        to {
+                                opacity: 1;
+                        }
+                }
+
+                @keyframes bounceIn {
+                        0% {
+                                opacity: 0;
+                                transform: scale(0.3) translateY(-100px);
+                        }
+
+                        60% {
+                                opacity: 1;
+                                transform: scale(1.1) translateY(20px);
+                        }
+
+                        80% {
+                                transform: scale(0.95) translateY(-10px);
+                        }
+
+                        100% {
+                                transform: scale(1) translateY(0);
+                        }
+                }
+
+                @keyframes sparkle {
+
+                        0%,
+                        100% {
+                                transform: scale(1) rotate(0deg);
+                                opacity: 1;
+                        }
+
+                        50% {
+                                transform: scale(1.5) rotate(180deg);
+                                opacity: 0.5;
+                        }
+                }
+        </style>
+</head>
+
+<body id="bodyId">
+
+        <img id="game-image" src="tamacanvareg.png" alt="Game Image">
+
+        <div class="card" id="game-card">
+                <div class="card-body">
+                        <h1>Find the Invisible Gold</h1>
+                        <p>Drag your mouse (or finger) around to find the gold. It’s hiding behind the shouting.</p>
+                        <p>
+                                <span class="sound-icon"><svg style="width: 30px;" xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1088 1024"
+                                                class="sc-bZQynM gEuJWl">
+                                                <title>speaker</title>
+                                                <path fill="currentColor"
+                                                        d="M890.040 922.040c-12.286 0-24.566-4.686-33.942-14.056-18.744-18.746-18.744-49.136 0-67.882 87.638-87.642 135.904-204.16 135.904-328.1 0-123.938-48.266-240.458-135.904-328.098-18.744-18.746-18.744-49.138 0-67.882s49.138-18.744 67.882 0c105.77 105.772 164.022 246.4 164.022 395.98s-58.252 290.208-164.022 395.98c-9.372 9.372-21.656 14.058-33.94 14.058zM719.53 831.53c-12.286 0-24.566-4.686-33.942-14.056-18.744-18.744-18.744-49.136 0-67.882 131.006-131.006 131.006-344.17 0-475.176-18.744-18.746-18.744-49.138 0-67.882 18.744-18.742 49.138-18.744 67.882 0 81.594 81.59 126.53 190.074 126.53 305.466 0 115.39-44.936 223.876-126.53 305.47-9.372 9.374-21.656 14.060-33.94 14.060v0zM549.020 741.020c-12.286 0-24.568-4.686-33.942-14.058-18.746-18.746-18.746-49.134 0-67.88 81.1-81.1 81.1-213.058 0-294.156-18.746-18.746-18.746-49.138 0-67.882s49.136-18.744 67.882 0c118.53 118.53 118.53 311.392 0 429.922-9.372 9.368-21.656 14.054-33.94 14.054z">
+                                                </path>
+                                                <path fill="currentColor"
+                                                        d="M416.006 960c-8.328 0-16.512-3.25-22.634-9.374l-246.626-246.626h-114.746c-17.672 0-32-14.326-32-32v-320c0-17.672 14.328-32 32-32h114.746l246.626-246.628c9.154-9.154 22.916-11.89 34.874-6.936 11.958 4.952 19.754 16.622 19.754 29.564v832c0 12.944-7.796 24.612-19.754 29.564-3.958 1.64-8.118 2.436-12.24 2.436z">
+                                                </path>
+                                        </svg></span>
+                                <span class="sound-text">Make sure you turn your audio on before playing.</span>
+                        </p>
+                        <button id="start-button">Start Game</button>
+                        <p>
+                                If you do not hear anything, it’s possible that your browser does not support the Web
+                                Audio API. Currently supported browsers are Chrome 10+, Firefox 25+, Opera 15+, and
+                                Safari 6+.
+                        </p>
+
+                </div>
+        </div>
+
+
+        <audio id="game-audio" src="beep.wav" loop></audio>
+
+        <script>
+                const audio = document.getElementById('game-audio');
+                const image = document.getElementById('game-image');
+                const startButton = document.getElementById('start-button');
+                const gameCard = document.getElementById('game-card');
+                const bodyId = document.getElementById('bodyId');
+
+                let positionTop = Math.floor(Math.random() * 91);
+                let positionLeft = Math.floor(Math.random() * 91);
+
+                // image Position Change
+                // image.style.top = `calc(${positionTop}% - 400px)`;
+                // image.style.left = `calc(${positionLeft}% - 200px)`;
+
+                image.style.top = `${positionTop}%`;
+                image.style.left = `${positionLeft}%`;
+
+
+                // Function to check if audio is playing
+                function isAudioPlaying(audio) {
+                        return !audio.paused && !audio.ended && audio.readyState > 2;
+                }
+
+                // Start button click
+                startButton.addEventListener('click', () => {
+                        audio.volume = 0.1;
+                        gameCard.style.display = 'none';
+                        bodyId.style.background = 'black';
+                        audio.play().then(() => {
+                                console.log("Audio started playing");
+
+                                // Now that audio is confirmed to be playing, enable click listener
+                                if (isAudioPlaying(audio)) {
+                                        image.addEventListener('click', () => {
+                                                image.style.opacity = 1;
+                                                audio.pause();
+                                                showPopup();
+                                        });
+                                }
+
+                        }).catch((err) => {
+                                console.error("Audio play failed:", err);
+                        });
+                });
+
+                // Volume control on hover
+                image.addEventListener('mouseenter', () => {
+                        audio.volume = 1.0;
+                });
+
+                image.addEventListener('mouseleave', () => {
+                        audio.volume = 0.1;
+                });
+        </script>
+
+
+        <div class="popup-overlay" id="popupOverlay">
+                <div class="popup sparkles">
+                        <h2>🎉 Congratulations!</h2>
+                        <p>You have successfully found the cow. Well done!</p>
+                        <button onclick="hidePopup()" class="retry-button">Retry</button>
+                </div>
+        </div>
+
+        <script>
+                function showPopup() {
+                        const overlay = document.getElementById('popupOverlay');
+                        overlay.style.display = 'flex';
+
+                        // Generate rain confetti
+                        for (let i = 0; i < 100; i++) {
+                                const confetti = document.createElement('div');
+                                confetti.classList.add('confetti');
+                                confetti.style.left = Math.random() * 100 + 'vw';
+                                confetti.style.backgroundColor = getRandomColor();
+                                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                                confetti.style.animationDelay = Math.random() + 's';
+                                document.body.appendChild(confetti);
+
+                                // Remove after animation
+                                setTimeout(() => {
+                                        confetti.remove();
+                                }, 5000);
+                        }
+                }
+
+                function hidePopup() {
+                        const overlay = document.getElementById('popupOverlay');
+                        overlay.style.animation = 'fadeOut 0.3s ease-in-out';
+                        setTimeout(() => {
+                                overlay.style.display = 'none';
+                                overlay.style.animation = '';
+                                location.reload();
+                        }, 300);
+                }
+
+                function getRandomColor() {
+                        const colors = ['#ff3838', '#ff9f1a', '#fff200', '#32ff7e', '#18dcff', '#7d5fff', '#e84393'];
+                        return colors[Math.floor(Math.random() * colors.length)];
+                }
+        </script>
+</body>
+
+</html>
